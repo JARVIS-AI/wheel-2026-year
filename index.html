@@ -1,9 +1,79 @@
 <!doctype html>
-<html lang="fa">
+<html lang="fa-IR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>چرخ شانس — نسخه روزنامه‌ای</title>
+  <title>چرخ شانس ۲۰۲۶ — نسخه روزنامه‌ای</title>
+
+  <!-- SEO / Meta (OpenGraph, Twitter, Apple, Telegram, Google) -->
+  <meta name="description" content="چرخ شانس ۲۰۲۶ با سبک روزنامه‌ای — گردونه انتخاب تصادفی با افکت اسکیچ، صدای تیک و ستون تاریخچه. ساخته‌شده توسط AMIR MOHAMMAD SAFARI." />
+  <meta name="keywords" content="چرخ شانس, گردونه شانس, انتخاب تصادفی, Wheel of Fortune, سال ۲۰۲۶, روزنامه ای, اسکیچ, AMIR MOHAMMAD SAFARI" />
+  <meta name="author" content="AMIR MOHAMMAD SAFARI" />
+  <meta name="creator" content="AMIR MOHAMMAD SAFARI" />
+  <meta name="publisher" content="AMIR MOHAMMAD SAFARI" />
+  <meta name="application-name" content="چرخ شانس ۲۰۲۶" />
+
+  <!-- Robots -->
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="bingbot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+
+  <!-- Canonical (حتماً آدرس نهایی سایت را جایگزین کنید) -->
+  <link rel="canonical" href="https://example.com/wheel-2026-year/" />
+
+  <!-- Open Graph (Facebook/Telegram/LinkedIn/...) -->
+  <meta property="og:locale" content="fa_IR" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="چرخ شانس" />
+  <meta property="og:title" content="چرخ شانس ۲۰۲۶ — نسخه روزنامه‌ای" />
+  <meta property="og:description" content="چرخ شانس ۲۰۲۶ با سبک روزنامه‌ای — گردونه انتخاب تصادفی با افکت اسکیچ، صدای تیک و ستون تاریخچه." />
+  <meta property="og:url" content="https://example.com/wheel-2026-year/" />
+  <meta property="og:image" content="https://example.com/wheel-2026-year/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="چرخ شانس ۲۰۲۶ — نسخه روزنامه‌ای" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="چرخ شانس ۲۰۲۶ — نسخه روزنامه‌ای" />
+  <meta name="twitter:description" content="گردونه انتخاب تصادفی با افکت اسکیچ، صدای تیک و ستون تاریخچه." />
+  <meta name="twitter:image" content="https://example.com/wheel-2026-year/og-image.jpg" />
+  <meta name="twitter:image:alt" content="چرخ شانس ۲۰۲۶ — نسخه روزنامه‌ای" />
+
+  <!-- Apple / iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="چرخ شانس ۲۰۲۶" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- Theme / PWA basics -->
+  <meta name="theme-color" content="#f4f1e8" />
+  <meta name="color-scheme" content="light" />
+  <link rel="manifest" href="./site.webmanifest" />
+
+  <!-- Icons (در صورت نیاز فایل‌ها را اضافه کنید/مسیر را تغییر دهید) -->
+  <link rel="icon" href="./favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="./icon-192.png" sizes="192x192" />
+  <link rel="icon" type="image/png" href="./icon-512.png" sizes="512x512" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <meta name="msapplication-TileColor" content="#f4f1e8" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "چرخ شانس ۲۰۲۶ — نسخه روزنامه‌ای",
+    "url": "https://example.com/wheel-2026-year/",
+    "inLanguage": "fa-IR",
+    "description": "چرخ شانس ۲۰۲۶ با سبک روزنامه‌ای — گردونه انتخاب تصادفی با افکت اسکیچ، صدای تیک و ستون تاریخچه.",
+    "creator": {
+      "@type": "Person",
+      "name": "AMIR MOHAMMAD SAFARI",
+      "url": "https://me.amsl.ir"
+    }
+  }
+  </script>
 
   <!--
     سازگاری IRANSansX:
@@ -74,6 +144,22 @@
                max(12px, env(safe-area-inset-left));
       overflow-x:hidden;
       overflow-y:auto;
+    }
+
+    /* نویز/گرین خیلی ریز روی کل صفحه */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:10000;
+      background-image:
+        radial-gradient(circle, rgba(0,0,0,.06) 0.6px, transparent 0.7px),
+        radial-gradient(circle, rgba(0,0,0,.04) 0.6px, transparent 0.7px);
+      background-size: 3px 3px, 5px 5px;
+      background-position: 0 0, 1px 2px;
+      opacity:.09;
+      mix-blend-mode:multiply;
     }
 
     /* Loading / splash */
