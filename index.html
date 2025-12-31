@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>چرخ شانس — نسخه روزنامه‌ای</title>
+
+  <!--
+    سازگاری IRANSansX:
+    این فایل‌ها را کنار همین HTML قرار بده (یا مسیرها را تغییر بده):
+      IRANSansX-Regular.woff2
+      IRANSansX-Bold.woff2
+  -->
+  <style>
+    @font-face{
+      font-family:"IRANSansX";
+      src:
+        local("IRANSansX"),
+        local("IRANSansX Regular"),
+        url("./IRANSansX-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face{
+      font-family:"IRANSansX";
+      src:
+        local("IRANSansX Bold"),
+        url("./IRANSansX-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root{
+      --paper:#f4f1e8;
+      --paper2:#efe6d4;
+      --paper3:#e5dcc7;
+      --ink:#1b1b1b;
+      --muted:#3a3a3a;
+      --shadow: rgba(0,0,0,.18);
+      --rule: rgba(0,0,0,.58);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{ min-height: 100svh; }
+    body{
+      margin:0;
+      background:
+        radial-gradient(1000px 700px at 15% 10%, rgba(255,255,255,.9) 0%, transparent 60%),
+        radial-gradient(900px 640px at 85% 25%, rgba(255,255,255,.8) 0%, transparent 55%),
+        linear-gradient(180deg, #e9e2d3, #ded3c0);
+      color:var(--ink);
+      font-family:
+        "IRANSansX",
+        "Vazirmatn",
+        "IRANSans",
+        "Shabnam",
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        Tahoma,
+        Georgia,
+        "Times New Roman",
+        serif;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding: max(12px, env(safe-area-inset-top))
+               max(12px, env(safe-area-inset-right))
+               max(16px, env(safe-area-inset-bottom))
+               max(12px, env(safe-area-inset-left));
+      overflow-x:hidden;
+      overflow-y:auto;
+    }
+
+    /* Loading / splash */
+    .splash{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      z-index:9999;
+      background:
+        radial-gradient(900px 600px at 50% 40%, rgba(255,255,255,.85), transparent 55%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.05) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 6px),
+        linear-gradient(180deg, var(--paper), var(--paper3));
+      transition: opacity .5s ease, visibility .5s ease;
+    }
+    .splash.hidden{
+      opacity:0;
+      visibility:hidden;
+    }
+    .splashCard{
+      width:min(860px, 92vw);
+      padding:26px 22px;
+      border:2px solid rgba(0,0,0,.7);
+      border-radius:18px;
+      background:
+        radial-gradient(700px 420px at 50% 30%, rgba(0,0,0,.06), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(0,0,0,.02));
+      box-shadow: 0 28px 70px rgba(0,0,0,.22);
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+      filter:url(#sketchFilter);
+    }
+    .splashCard::before{
+      content:"";
+      position:absolute; inset:-30px;
+      background:
+        radial-gradient(420px 260px at 15% 10%, rgba(0,0,0,.10), transparent 60%),
+        radial-gradient(420px 260px at 85% 20%, rgba(0,0,0,.08), transparent 60%),
+        radial-gradient(520px 340px at 50% 120%, rgba(0,0,0,.10), transparent 62%);
+      opacity:.35;
+      pointer-events:none;
+      mix-blend-mode:multiply;
+    }
+    .splashTitle{
+      margin:0;
+      font-size: clamp(26px, 4.6vw, 54px);
+      letter-spacing:.06em;
+    }
+    .splashSub{
+      margin:10px 0 0;
+      font-size: clamp(14px, 2.2vw, 20px);
+      letter-spacing:.10em;
+      opacity:.88;
+    }
+    .splashRule{
+      margin:18px auto 0;
+      width:min(520px, 80%);
+      border-top:3px double rgba(0,0,0,.7);
+      opacity:.85;
+    }
+    .splashSmall{
+      margin:14px 0 0;
+      font-size:12px;
+      letter-spacing:.10em;
+      opacity:.78;
+    }
+
+    /* Paper sheet */
+    .sheet{
+      width:min(1100px, 96vw);
+      margin: 10px auto 18px;
+      padding:22px 22px 16px;
+      background:
+        radial-gradient(circle at 12px 10px, rgba(0,0,0,.05) 1px, transparent 1.5px),
+        radial-gradient(circle at 36px 28px, rgba(0,0,0,.04) 1px, transparent 1.6px),
+        radial-gradient(circle at 58px 16px, rgba(0,0,0,.03) 1px, transparent 1.6px),
+        repeating-linear-gradient( 0deg, rgba(0,0,0,.035) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,.025) 0 1px, transparent 1px 6px),
+        linear-gradient(180deg, var(--paper), var(--paper2));
+      background-size: 72px 54px, 90px 64px, 120px 90px, auto, auto, auto;
+      border:2px solid rgba(0,0,0,.65);
+      border-radius:18px;
+      box-shadow: 0 24px 60px var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .sheet::before{
+      content:"";
+      position:absolute; inset:-40px;
+      background:
+        radial-gradient(520px 340px at 20% 10%, rgba(0,0,0,.10), transparent 62%),
+        radial-gradient(420px 280px at 90% 20%, rgba(0,0,0,.08), transparent 60%),
+        radial-gradient(520px 360px at 60% 112%, rgba(0,0,0,.10), transparent 62%),
+        radial-gradient(1200px 900px at 50% 50%, transparent 55%, rgba(0,0,0,.12) 100%);
+      pointer-events:none;
+      mix-blend-mode:multiply;
+      opacity:.50;
+      filter: blur(.35px);
+    }
+
+    .fold{
+      position:absolute;
+      left:50%;
+      top:0;
+      transform:translateX(-50%);
+      width:2px;
+      height:100%;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.14), transparent);
+      opacity:.45;
+      pointer-events:none;
+    }
+
+    .tear{
+      position:absolute; inset:0;
+      pointer-events:none;
+      opacity:.25;
+      background:
+        radial-gradient(20px 10px at 20px 12px, rgba(0,0,0,.65), transparent 70%),
+        radial-gradient(22px 12px at calc(100% - 30px) 16px, rgba(0,0,0,.55), transparent 70%),
+        radial-gradient(24px 12px at 22px calc(100% - 18px), rgba(0,0,0,.55), transparent 72%),
+        radial-gradient(22px 12px at calc(100% - 26px) calc(100% - 20px), rgba(0,0,0,.55), transparent 70%);
+      filter: blur(.6px);
+    }
+
+    header{
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      padding-bottom:14px;
+      border-bottom:3px double rgba(0,0,0,.75);
+      margin-bottom:18px;
+    }
+
+    .masthead{ line-height:1; max-width: 70%; }
+    .masthead h1{
+      margin:0;
+      font-size: clamp(30px, 4.6vw, 52px);
+      letter-spacing:.08em;
+      position:relative;
+      display:inline-block;
+      filter:url(#sketchFilter);
+    }
+    .masthead h1::after{
+      content:"";
+      position:absolute;
+      left:-2px; right:-2px; bottom:-7px;
+      height:10px;
+      background: repeating-linear-gradient(90deg, rgba(0,0,0,.75) 0 2px, transparent 2px 6px);
+      opacity:.22;
+      transform:skewX(-10deg);
+      filter: blur(.35px);
+    }
+
+    .strap{
+      margin-top:8px;
+      font-size:12px;
+      letter-spacing:.10em;
+      opacity:.85;
+    }
+
+    .meta{
+      text-align:left;
+      font-size:12px;
+      color:rgba(0,0,0,.75);
+      letter-spacing:.06em;
+      white-space:nowrap;
+      direction:ltr; /* تاریخ/زمان بهتر نمایش داده می‌شود */
+    }
+
+    .layout{
+      position:relative;
+      display:grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap:18px;
+    }
+    @media (max-width: 940px){
+      .layout{grid-template-columns:1fr}
+      .meta{white-space:normal}
+      .masthead{max-width:100%}
+    }
+
+    @media (max-width: 600px){
+      body{ padding-top: max(10px, env(safe-area-inset-top)); }
+      .sheet{ width: 94vw; padding:16px 14px 14px; border-radius:16px; }
+      header{ flex-direction:column; align-items:flex-start; gap:10px; }
+      .masthead{ max-width:100%; }
+      .meta{ text-align:left; }
+      .layout{ gap:14px; }
+      .card{ padding:14px; }
+      .stage{ width: min(92vw, 520px); }
+      .historyList{ columns:1; }
+    }
+
+    .card{
+      position:relative;
+      background:rgba(255,255,255,.10);
+      border:2px solid rgba(0,0,0,.65);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.14em;
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      left:14px; right:14px; bottom:12px;
+      border-bottom:1px dashed rgba(0,0,0,.35);
+      opacity:.5;
+      pointer-events:none;
+    }
+
+    .wheelWrap{
+      display:grid;
+      place-items:center;
+      padding:14px;
+      gap:14px;
+    }
+    .stage{
+      position:relative;
+      width:min(540px, 100%);
+      aspect-ratio: 1/1;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      border:2px dashed rgba(0,0,0,.65);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,.05) 0 58%, transparent 62%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.16) 0 45%, transparent 70%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.018) 0 1px, transparent 1px 5px);
+      overflow:hidden;
+    }
+    canvas{
+      width:100%;
+      height:100%;
+      display:block;
+      filter: url(#sketchFilter);
+    }
+
+    .pointer{
+      position:absolute;
+      top:-10px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0; height:0;
+      border-left:18px solid transparent;
+      border-right:18px solid transparent;
+      border-bottom:34px solid rgba(0,0,0,.86);
+      filter: drop-shadow(0 6px 0 rgba(0,0,0,.25));
+      z-index:5;
+      transition: transform .06s ease;
+    }
+    .pointer.jolt{
+      transform: translateX(-50%) rotate(-10deg);
+    }
+    .pointer::after{
+      content:"";
+      position:absolute;
+      left:-10px; top:10px;
+      width:20px; height:20px;
+      border-radius:999px;
+      background: var(--paper);
+      border:2px solid rgba(0,0,0,.85);
+      box-shadow: 0 3px 0 rgba(0,0,0,.18);
+    }
+
+    .hub{
+      position:absolute;
+      width:100px; height:100px;
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 40% 35%, rgba(255,255,255,.55), transparent 55%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,.08), transparent 60%),
+        linear-gradient(180deg, var(--paper), var(--paper2));
+      border:2px solid rgba(0,0,0,.78);
+      box-shadow: 0 10px 18px rgba(0,0,0,.15);
+      display:grid;
+      place-items:center;
+      z-index:4;
+      filter: url(#sketchFilter);
+      user-select:none;
+    }
+    .hub span{
+      font-size:13px;
+      letter-spacing:.12em;
+      padding:8px 12px;
+      border:2px solid rgba(0,0,0,.55);
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      transform:rotate(-6deg);
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding:12px 18px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(0,0,0,.92), rgba(0,0,0,.80));
+      color: var(--paper);
+      font-weight:800;
+      letter-spacing:.10em;
+      box-shadow: 0 10px 0 rgba(0,0,0,.18), 0 16px 20px rgba(0,0,0,.18);
+      position:relative;
+      transform: translateY(0);
+      transition: transform .08s ease, opacity .2s ease;
+      filter:url(#sketchFilter);
+      font-family: "IRANSansX","Vazirmatn",system-ui,sans-serif;
+    }
+    .btn:active{
+      transform: translateY(6px);
+      box-shadow: 0 4px 0 rgba(0,0,0,.18), 0 10px 16px rgba(0,0,0,.18);
+    }
+    .btn.secondary{
+      background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.62));
+      font-weight:700;
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .result{
+      width:100%;
+      text-align:center;
+      border-top:3px double rgba(0,0,0,.75);
+      padding-top:12px;
+      margin-top:6px;
+    }
+    .result .kicker{
+      font-size:12px;
+      letter-spacing:.16em;
+      opacity:.86;
+    }
+    .result .headline{
+      margin:8px 0 0;
+      font-size: clamp(18px, 2.3vw, 28px);
+      letter-spacing:.01em;
+      line-height:1.35;
+      padding-inline:6px;
+      word-break:break-word;
+    }
+
+    .sideGrid{ display:grid; gap:12px; }
+    .panel{
+      border:2px solid rgba(0,0,0,.55);
+      border-radius:16px;
+      padding:12px;
+      background: rgba(255,255,255,.10);
+      box-shadow: inset 0 8px 18px rgba(0,0,0,.06);
+    }
+    .panelTitle{
+      margin:0 0 8px;
+      font-size:12px;
+      letter-spacing:.12em;
+      opacity:.9;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    textarea{
+      width:100%;
+      min-height:180px;
+      resize:vertical;
+      padding:12px 12px;
+      border-radius:14px;
+      border:2px solid rgba(0,0,0,.55);
+      background:rgba(255,255,255,.18);
+      outline:none;
+      font-family: "IRANSansX","Vazirmatn",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+      font-size:13px;
+      line-height:1.6;
+      color:rgba(0,0,0,.88);
+      direction:auto;
+      box-shadow: inset 0 6px 14px rgba(0,0,0,.08);
+      filter:url(#sketchFilter);
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:10px;
+    }
+    .stat{
+      font-size:12px;
+      letter-spacing:.08em;
+      opacity:.85;
+    }
+    .hint{
+      margin:10px 0 0;
+      font-size:12px;
+      opacity:.82;
+      line-height:1.6;
+    }
+
+    .historyBox{
+      max-height: 210px;
+      overflow:auto;
+      padding:10px;
+      border-radius:14px;
+      border:2px solid rgba(0,0,0,.55);
+      background: rgba(255,255,255,.15);
+      filter:url(#sketchFilter);
+    }
+    .historyList{
+      margin:0;
+      padding:0;
+      list-style:none;
+      columns:2;
+      column-gap:14px;
+    }
+    @media (max-width: 940px){
+      .historyList{columns:1}
+    }
+    .historyList li{
+      break-inside:avoid;
+      padding:6px 8px;
+      margin:0 0 8px;
+      border:1px dashed rgba(0,0,0,.45);
+      border-radius:12px;
+      background: rgba(255,255,255,.08);
+      line-height:1.35;
+    }
+    .historyList .t{
+      font-size:11px;
+      letter-spacing:.08em;
+      opacity:.75;
+      display:block;
+      margin-bottom:4px;
+      direction:ltr;
+      text-align:left;
+    }
+    .historyList .v{
+      font-size:13px;
+      opacity:.92;
+      word-break:break-word;
+    }
+
+    footer{
+      margin-top:14px;
+      padding-top:12px;
+      border-top:3px double rgba(0,0,0,.75);
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      font-size:12px;
+      letter-spacing:.06em;
+      opacity:.9;
+    }
+    footer a{
+      color:inherit;
+      text-decoration:none;
+      border-bottom:1px dashed rgba(0,0,0,.55);
+    }
+    footer a:hover{border-bottom-style:solid}
+
+    .wobble{
+      animation: wobble 3.1s infinite ease-in-out;
+      transform-origin:center;
+    }
+    @keyframes wobble{
+      0%,100%{ transform: rotate(-.25deg) }
+      50%{ transform: rotate(.35deg) }
+    }
+  </style>
+
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="sketchFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.75" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+</head>
+
+<body dir="rtl">
+  <!-- Splash / loading screen -->
+  <div class="splash" id="splash" role="status" aria-live="polite">
+    <div class="splashCard">
+      <h1 class="splashTitle">تبریک!</h1>
+      <div class="splashSub">سال ۲۰۲۶ مبارک</div>
+      <div class="splashRule"></div>
+      <div class="splashSmall">در حال بارگذاری چرخ شانس…</div>
+    </div>
+  </div>
+
+  <main class="sheet" aria-label="چرخ شانس با سبک روزنامه‌ای">
+    <div class="tear"></div>
+    <div class="fold"></div>
+
+    <header>
+      <div class="masthead">
+        <h1 class="wobble">چرخ شانس</h1>
+        <div class="strap">نسخه دست‌نویس و روزنامه‌ای — جوهر، کاغذ و تیترها</div>
+      </div>
+      <div class="meta" id="meta"></div>
+    </header>
+
+    <section class="layout">
+      <!-- Left: Wheel -->
+      <article class="card">
+        <h2>چرخ</h2>
+
+        <div class="wheelWrap">
+          <div class="stage wobble" aria-label="چرخ شانس">
+            <div class="pointer" id="pointer" aria-hidden="true"></div>
+            <canvas id="wheel" width="900" height="900"></canvas>
+            <div class="hub" aria-hidden="true"><span>بچرخان</span></div>
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="spinBtn">بچرخان!</button>
+            <button class="btn secondary" id="toggleSoundBtn" title="روشن/خاموش کردن صدای تیک">صدا: روشن</button>
+            <button class="btn secondary" id="shuffleBtn" title="بر زدن گزینه‌ها">بر زدن</button>
+            <button class="btn secondary" id="resetBtn" title="بازنشانی چرخ">بازنشانی</button>
+          </div>
+
+          <div class="result" role="status" aria-live="polite">
+            <div class="kicker">ویژه! ویژه!</div>
+            <div class="headline" id="resultText">برای انتخاب، روی «بچرخان!» بزن.</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Right: Items + History -->
+      <aside class="card">
+        <h2>میز سردبیر</h2>
+
+        <div class="sideGrid">
+          <div class="panel">
+            <div class="panelTitle">
+              <span>گزینه‌ها (هر خط یک مورد)</span>
+              <span class="stat" id="countStat">۰ گزینه</span>
+            </div>
+            <textarea id="itemsInput" spellcheck="false" placeholder="مثال:
+جایزه ویژه
+قهوه
+کار مهم امروز
+خبر خوب
+..."></textarea>
+            <div class="row">
+              <button class="btn secondary" id="applyBtn">اعمال</button>
+              <button class="btn secondary" id="saveBtn" title="ذخیره گزینه‌ها در همین مرورگر">ذخیره</button>
+              <button class="btn secondary" id="loadBtn" title="بارگذاری گزینه‌های ذخیره‌شده">بارگذاری</button>
+            </div>
+            <p class="hint">
+              نکته: می‌تونی جایزه‌ها، کارها، اسم‌ها یا «چالش امروز» رو اضافه کنی. (اگر فایل‌های IRANSansX را قرار بدهی، با آن نمایش داده می‌شود.)
+            </p>
+          </div>
+
+          <div class="panel">
+            <div class="panelTitle">
+              <span>ستون تاریخچه</span>
+              <button class="btn secondary" id="clearHistoryBtn" style="padding:10px 14px">پاک کردن</button>
+            </div>
+            <div class="historyBox" aria-label="تاریخچه چرخش‌ها">
+              <ol class="historyList" id="historyList"></ol>
+            </div>
+            <p class="hint">به‌صورت خودکار در مرورگر ذخیره می‌شود (localStorage).</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <div>© ۲۰۲۶ • چرخ شانس — چاپ روزنامه</div>
+      <div>ساخته‌شده توسط <a href="https://me.amsl.ir" target="_blank" rel="noopener">AMIR MOHAMMAD SAFARI</a></div>
+    </footer>
+  </main>
+
+<script>
+(() => {
+  // ---- Meta date/time ----
+  const meta = document.getElementById('meta');
+  const now = new Date();
+  meta.textContent =
+    now.toLocaleDateString(undefined, { weekday:'long', year:'numeric', month:'long', day:'numeric' }) +
+    " • " +
+    now.toLocaleTimeString(undefined, { hour:'2-digit', minute:'2-digit' });
+
+  // ---- Splash screen (7 seconds) ----
+  const splash = document.getElementById('splash');
+  setTimeout(() => splash.classList.add('hidden'), 7000);
+
+  // ---- Elements ----
+  const canvas = document.getElementById('wheel');
+  const ctx = canvas.getContext('2d');
+  const resultText = document.getElementById('resultText');
+  const itemsInput = document.getElementById('itemsInput');
+  const countStat = document.getElementById('countStat');
+  const historyList = document.getElementById('historyList');
+  const pointerEl = document.getElementById('pointer');
+
+  const spinBtn = document.getElementById('spinBtn');
+  const shuffleBtn = document.getElementById('shuffleBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const applyBtn = document.getElementById('applyBtn');
+  const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const loadBtn = document.getElementById('loadBtn');
+  const toggleSoundBtn = document.getElementById('toggleSoundBtn');
+
+  // ---- Storage keys ----
+  const KEY_ITEMS = "dailySpin.items.v1";
+  const KEY_HISTORY = "dailySpin.history.v1";
+
+  // ---- State ----
+  let items = [
+    "استراحت قهوه",
+    "انتخاب برنده",
+    "امتیاز اضافه",
+    "جایزه مرموز",
+    "دوباره تلاش کن",
+    "خبر خوب!",
+    "کارت آزاد",
+    "یک جوک بگو"
+  ];
+
+  let angle = 0;           // radians
+  let angVel = 0;          // rad/s
+  let spinning = false;
+
+  // tick logic
+  let lastIdxForTick = null;
+  let soundOn = true;
+
+  // history
+  let history = [];
+
+  // ---- Audio (Web Audio tick) ----
+  let audioCtx = null;
+  function ensureAudio(){
+    if (!audioCtx){
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume().catch(()=>{});
+  }
+
+  function playTick(strength=1){
+    if(!soundOn) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    const freq = 1200 + (strength * 350);
+    osc.type = "square";
+    osc.frequency.setValueAtTime(freq, t);
+
+    filter.type = "highpass";
+    filter.frequency.setValueAtTime(700, t);
+
+    const vol = 0.06 * Math.min(1.8, strength);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(vol, t + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(t);
+    osc.stop(t + 0.04);
+
+    pointerEl.classList.add("jolt");
+    setTimeout(() => pointerEl.classList.remove("jolt"), 70);
+  }
+
+  function playWin(){
+    if(!soundOn) return;
+    ensureAudio();
+    const t = audioCtx.currentTime;
+
+    const make = (freq, start) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.10, start + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.20);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(start);
+      osc.stop(start + 0.22);
+    };
+    make(740, t);
+    make(990, t + 0.08);
+  }
+
+  // ---- Geometry helpers ----
+  const TAU = Math.PI * 2;
+  const rand = (a,b) => a + Math.random()*(b-a);
+  const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+  const normAngle = a => (a % TAU + TAU) % TAU;
+
+  function shuffleInPlace(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+  }
+
+  function grayscaleFill(i, n){
+    const t = n <= 1 ? 0 : i/(n-1);
+    const base = 242 - Math.round(92*t);
+    const jitter = Math.round(rand(-10, 10));
+    const v = clamp(base + jitter, 115, 245);
+    return `rgb(${v},${v},${v})`;
+  }
+
+  function roughStroke(pathDrawFn, passes=3){
+    for(let p=0; p<passes; p++){
+      ctx.save();
+      ctx.globalAlpha = 0.58 - p*0.12;
+      ctx.lineWidth = 2 + p*0.65;
+      ctx.strokeStyle = "rgba(0,0,0,.88)";
+      ctx.setLineDash(p === 2 ? [4,3] : []);
+      ctx.lineDashOffset = rand(0, 6);
+      ctx.translate(rand(-0.7,0.7), rand(-0.7,0.7));
+      ctx.beginPath();
+      pathDrawFn();
+      ctx.stroke();
+      ctx.restore();
+    }
+    ctx.setLineDash([]);
+  }
+
+  function hatchSlice(cx, cy, r, start, end){
+    const span = end - start;
+    const lines = Math.floor(18 + span * 24);
+    const step = (r * 2) / lines;
+    const rot = rand(-0.7, 0.7);
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rot);
+
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,r, start-rot, end-rot, false);
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.globalAlpha = 0.26;
+    ctx.lineWidth = 1;
+
+    for(let x = -r*1.5; x <= r*1.5; x += step){
+      ctx.beginPath();
+      ctx.moveTo(x, -r*1.7);
+      ctx.lineTo(x + r*1.7, r*1.7);
+      ctx.strokeStyle = "rgba(0,0,0,.66)";
+      ctx.stroke();
+    }
+
+    if (Math.random() < 0.46){
+      ctx.globalAlpha = 0.12;
+      for(let x = -r*1.5; x <= r*1.5; x += step*1.7){
+        ctx.beginPath();
+        ctx.moveTo(x, r*1.7);
+        ctx.lineTo(x + r*1.7, -r*1.7);
+        ctx.strokeStyle = "rgba(0,0,0,.66)";
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  // ---- Canvas sizing (retina) ----
+  function fitCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width  = Math.round(rect.width  * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawWheel();
+  }
+  window.addEventListener('resize', fitCanvas);
+
+  // ---- Wheel drawing ----
+  function drawWheel(){
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    const cx = w/2, cy = h/2;
+    const r = Math.min(w,h) * 0.44;
+
+    ctx.clearRect(0,0,w,h);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r+18, 0, TAU);
+    ctx.strokeStyle = "rgba(0,0,0,.20)";
+    ctx.lineWidth = 22;
+    ctx.globalAlpha = 0.12;
+    ctx.stroke();
+    ctx.restore();
+
+    const n = Math.max(1, items.length);
+    const slice = TAU / n;
+
+    for(let i=0;i<n;i++){
+      const start = angle + i*slice;
+      const end   = start + slice;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,r, start, end);
+      ctx.closePath();
+      ctx.fillStyle = grayscaleFill(i,n);
+      ctx.globalAlpha = 0.98;
+      ctx.fill();
+      ctx.restore();
+
+      hatchSlice(cx, cy, r, start, end);
+
+      roughStroke(() => {
+        ctx.moveTo(cx,cy);
+        ctx.arc(cx,cy,r, start, end);
+        ctx.closePath();
+      }, 3);
+
+      const mid = (start + end)/2;
+      const label = (items[i] ?? "").trim() || "—";
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(mid);
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+
+      const fontSize = clamp(r*0.085, 12, 20);
+      ctx.font = `800 ${fontSize}px "IRANSansX", "Vazirmatn", Georgia, "Times New Roman", serif`;
+
+      const tx = r * 0.86;
+      const ty = 0;
+
+      ctx.fillStyle = "rgba(0,0,0,.24)";
+      ctx.fillText(label, tx + 1.2, ty + 1.1);
+
+      ctx.fillStyle = "rgba(0,0,0,.90)";
+      ctx.fillText(label, tx + rand(-0.6,0.6), ty + rand(-0.6,0.6));
+      ctx.restore();
+    }
+
+    roughStroke(() => { ctx.arc(cx,cy,r,0,TAU); }, 4);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*0.24,0,TAU);
+    ctx.strokeStyle = "rgba(0,0,0,.82)";
+    ctx.lineWidth = 3;
+    ctx.globalAlpha = 0.55;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function winnerIndex(){
+    const n = Math.max(1, items.length);
+    const slice = TAU / n;
+    const pointer = -Math.PI/2;
+    const a = normAngle(pointer - angle);
+    const idx = Math.floor(a / slice);
+    return clamp(idx, 0, n-1);
+  }
+
+  function setResult(idx){
+    const text = (items[idx] || "—").trim();
+    resultText.textContent = text || "—";
+  }
+
+  // ---- History ----
+  function renderHistory(){
+    historyList.innerHTML = "";
+    if(history.length === 0){
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="t">هنوز تیتر نداریم</span><span class="v">یک بار بچرخون تا ثبت بشه!</span>`;
+      historyList.appendChild(li);
+      return;
+    }
+    history.slice(0, 24).forEach(entry => {
+      const li = document.createElement("li");
+      const t = new Date(entry.ts);
+      const time = t.toLocaleTimeString(undefined, {hour:"2-digit", minute:"2-digit"});
+      li.innerHTML = `<span class="t">${time}</span><span class="v">${escapeHtml(entry.value)}</span>`;
+      historyList.appendChild(li);
+    });
+  }
+
+  function pushHistory(value){
+    history.unshift({ ts: Date.now(), value });
+    history = history.slice(0, 60);
+    localStorage.setItem(KEY_HISTORY, JSON.stringify(history));
+    renderHistory();
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  // ---- Items handling ----
+  function updateCount(){
+    countStat.textContent = `${items.length} گزینه`;
+  }
+
+  function applyItems(){
+    const lines = itemsInput.value
+      .split("\n")
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    items = lines.length ? lines : ["(خالی)"];
+    updateCount();
+    drawWheel();
+    setResult(winnerIndex());
+  }
+
+  function seedTextarea(){
+    itemsInput.value = items.join("\n");
+    updateCount();
+  }
+
+  function saveItems(){
+    localStorage.setItem(KEY_ITEMS, JSON.stringify(items));
+  }
+  function loadItems(){
+    try{
+      const raw = localStorage.getItem(KEY_ITEMS);
+      if(!raw) return false;
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr) && arr.length){
+        items = arr.map(x => String(x));
+        seedTextarea();
+        applyItems();
+        return true;
+      }
+    }catch(e){}
+    return false;
+  }
+
+  // ---- Spin animation + tick detection ----
+  let lastTs = null;
+
+  function stepTick(prevIdx, currIdx, n){
+    const steps = (prevIdx - currIdx + n) % n;
+    if(steps <= 0) return;
+    const maxTicksPerFrame = 8;
+    const ticks = Math.min(steps, maxTicksPerFrame);
+    const strength = clamp(angVel / 10, 0.7, 1.6);
+    for(let i=0;i<ticks;i++) playTick(strength);
+  }
+
+  function tick(ts){
+    if(!lastTs) lastTs = ts;
+    const dt = Math.min(0.03, (ts - lastTs)/1000);
+    lastTs = ts;
+
+    if(spinning){
+      angle += angVel * dt;
+
+      // اصطکاک (برای چرخش طولانی‌تر تنظیم شده)
+      const friction = 0.992 - (Math.min(angVel, 20) * 0.0008);
+      angVel *= Math.pow(friction, dt*60);
+
+      const currIdx = winnerIndex();
+      const n = Math.max(1, items.length);
+      if(lastIdxForTick === null) lastIdxForTick = currIdx;
+      if(currIdx !== lastIdxForTick){
+        stepTick(lastIdxForTick, currIdx, n);
+        lastIdxForTick = currIdx;
+      }
+
+      // توقف
+      if(angVel < 0.22){
+        spinning = false;
+        angVel = 0;
+
+        const idx = winnerIndex();
+        setResult(idx);
+
+        const slice = TAU / n;
+        const pointer = -Math.PI/2;
+        const targetMid = (idx + 0.5) * slice;
+        const desired = normAngle(pointer - targetMid);
+        const current = normAngle(angle);
+        let delta = desired - current;
+        if(delta > Math.PI) delta -= TAU;
+        if(delta < -Math.PI) delta += TAU;
+        angle += delta;
+
+        drawWheel();
+
+        const finalValue = (items[idx] || "—").trim() || "—";
+        pushHistory(finalValue);
+        playWin();
+      }else{
+        drawWheel();
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // ---- UI actions ----
+  spinBtn.addEventListener('click', () => {
+    ensureAudio();
+    if(spinning) return;
+    if(items.length < 2){
+      resultText.textContent = "اول چند گزینه اضافه کن.";
+      return;
+    }
+    spinning = true;
+    lastTs = null;
+    lastIdxForTick = null;
+
+    // شروع قوی‌تر برای چرخش طولانی‌تر
+    angVel = rand(18, 26);
+    resultText.textContent = "در حال چرخش…";
+  });
+
+  toggleSoundBtn.addEventListener('click', () => {
+    ensureAudio();
+    soundOn = !soundOn;
+    toggleSoundBtn.textContent = soundOn ? "صدا: روشن" : "صدا: خاموش";
+  });
+
+  shuffleBtn.addEventListener('click', () => {
+    shuffleInPlace(items);
+    seedTextarea();
+    applyItems();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    spinning = false;
+    angVel = 0;
+    angle = 0;
+    lastIdxForTick = null;
+    drawWheel();
+    setResult(winnerIndex());
+  });
+
+  applyBtn.addEventListener('click', () => {
+    applyItems();
+    resultText.textContent = "اعمال شد.";
+  });
+
+  clearHistoryBtn.addEventListener('click', () => {
+    history = [];
+    localStorage.removeItem(KEY_HISTORY);
+    renderHistory();
+    resultText.textContent = "تاریخچه پاک شد.";
+  });
+
+  saveBtn.addEventListener('click', () => {
+    applyItems();
+    saveItems();
+    resultText.textContent = "گزینه‌ها ذخیره شد.";
+  });
+
+  loadBtn.addEventListener('click', () => {
+    const ok = loadItems();
+    resultText.textContent = ok ? "گزینه‌ها بارگذاری شد." : "چیزی برای بارگذاری پیدا نشد.";
+  });
+
+  // ---- Init from storage ----
+  try{
+    const h = localStorage.getItem(KEY_HISTORY);
+    if(h) history = JSON.parse(h) || [];
+  }catch(e){ history = []; }
+
+  renderHistory();
+
+  const loaded = loadItems();
+  if(!loaded) seedTextarea();
+  applyItems();
+
+  fitCanvas();
+  setResult(winnerIndex());
+})();
+</script>
+</body>
+</html>
